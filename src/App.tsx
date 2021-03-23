@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react"
+import assetOrder from "./assets/order.json"
+import Orders from "./Orders"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    progress: false,
+    assetOrder: {},
+  }
+
+  showProgress = () => this.setState({ ...this.state, progress: true })
+  hideProgress = () => this.setState({ ...this.state, progress: false })
+
+  updateAssetOrder = (assetOrder: object) => this.setState({ assetOrder })
+
+  fetchMyOrder = (assetOrder: object) => {
+    setTimeout(() => {
+      this.updateAssetOrder(assetOrder)
+    }, 1000)
+  }
+
+  componentDidMount() {
+    this.showProgress()
+    this.fetchMyOrder(assetOrder)
+  }
+
+  render() {
+    return (
+      <div>
+        {this.state.progress && <div>Loading...</div>}
+        <Orders {...{ assetOrder }} hideProgress={this.hideProgress} />
+      </div>
+    )
+  }
 }
 
-export default App;
+export default App
